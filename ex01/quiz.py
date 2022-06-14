@@ -3,16 +3,14 @@ import datetime
 if __name__ == "__main__":
     n = random.randint(0, 2)    
     st = datetime.datetime.now() 
-    def shutudai():
-        global n
+    def shutudai(n):
         q1 = "サザエの旦那の名前は？"
         q2 = "カツオの妹の名前は？"
         q3 = "タラオはカツオから見てどんな関係？"
         q_list = [q1, q2, q3]
         return q_list[n]
 
-    def kaito():
-        global n
+    def kaito(n):
         a1 = ["マスオ", "ますお"]
         a2 = ["ワカメ", "わかめ"]
         a3 = ["甥", "おい", "甥っ子", "おいっこ"]
@@ -26,8 +24,8 @@ if __name__ == "__main__":
         return result
     
     print("問題：")
-    print(shutudai())
-    print(kaito())
+    print(shutudai(n))
+    print(kaito(n))
     ed = datetime.datetime.now()
 
     print(f"{(ed-st).seconds}秒")
