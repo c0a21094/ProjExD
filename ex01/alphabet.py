@@ -31,13 +31,13 @@ def kaitou_kazu():
         return 1
     else:
         print("不正解です。またチャレンジしてください")
-        return 0
-
-def kaitou(seikai):
+        return 
+        
+def kaitou(s):
     c = 1
     while c <= m_num:
         ans = input(f"{c}つ目の文字を入力してください：")
-        if ans in seikai:
+        if ans in s:
             print("正解です")
         else:
             print("不正解です。またチャレンジしてください")
@@ -47,11 +47,11 @@ def kaitou(seikai):
 def main():
     st = datetime.datetime.now() 
     for i in range(max):
-        seikai = shutudai()
+        s = shutudai()
         f1 = kaitou_kazu()
         if f1 == 0:
             break
-        f2 = kaitou(seikai)
+        f2 = kaitou(s)
         if f2 == 1:
             ed = datetime.datetime.now()
             time = (ed-st).seconds
