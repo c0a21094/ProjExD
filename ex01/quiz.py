@@ -1,7 +1,7 @@
 import random
 import datetime
 if __name__ == "__main__":
-    n = random.randint(0, 2)    
+    num = random.randint(0, 2)    
     st = datetime.datetime.now() 
     def shutudai(n):
         q1 = "サザエの旦那の名前は？"
