@@ -8,9 +8,9 @@ def button_click(event):
     #tkm.showinfo("",f"{num}のボタンが押されました")
     entry.insert(tk.END, num)
     rdcolor = [
-        "#000000", "#FF0000", "#FFA500", "#FFFF00", "#008000", "#00FFFF", "#0000FF", "#800080"
+         "#FF0000", "#FFA500", "#FFFF00", "#008000", "#00FFFF", "#0000FF", "#800080"
     ]
-    i = rd.randint(0, 7)
+    i = rd.randint(0, 6)
     button["bg"] = rdcolor[i]
 
 def eqall_click(event):
