@@ -1,7 +1,7 @@
 import tkinter as tk
-import tkinter.messagebox as tkm
 
-root = tk.Tk()
-root.geometry("300x500")
-
-root.mainloop()
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("300x500")
+    root.title("電卓")
+    root.mainloop()
