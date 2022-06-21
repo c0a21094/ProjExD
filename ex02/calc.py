@@ -6,6 +6,7 @@ def button_click(event):
     num = button["text"]
     #tkm.showinfo("",f"{num}のボタンが押されました")
     entry.insert(tk.END, num)
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("300x600")
@@ -15,14 +16,13 @@ if __name__ == "__main__":
     entry.grid(row=0, column=0, columnspan=3)
 
     r,c=1,0
-    for i in range(9,-1,-1):
-        button =tk.Button(root,text=i,width=4, height=2,font=("Times New Roman",30))
+    for i, num in enumerate([9, 8, 7, 6, 5, 4, 3, 2, 1, 0]+["+"]):
+        button =tk.Button(root,text=num,width=4, height=2,font=("Times New Roman",30))
         button.bind("<1>", button_click)
         button.grid(row=r,column=c)
         c+=1
-        if (i-1)%3==0:
+        if (i+1)%3==0:
             r+=1
             c=0
-
         
     root.mainloop()
