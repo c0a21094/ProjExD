@@ -4,8 +4,8 @@ import tkinter.messagebox as tkm
 def button_click(event):
     button = event.widget
     num = button["text"]
-    tkm.showinfo("",f"{num}のボタンが押されました")
-
+    #tkm.showinfo("",f"{num}のボタンが押されました")
+    entry.insert(tk.END, num)
 if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("300x600")
