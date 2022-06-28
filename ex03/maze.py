@@ -1,3 +1,4 @@
+import random
 import tkinter as tk
 import maze_maker
 
@@ -5,11 +6,10 @@ import maze_maker
 key = ""        #押されたキーを代入する関数
 cx, cy =150, 150     #こうかとんの現在地を表す変数
 mx, my = 1, 1
-
+png_num = 1
 #こうかとんを表示する関数
 def draw():
-    global tori, cx, cy, tori_id
-    png_num = 1
+    global tori, cx, cy, tori_id, png_num
     png = f"fig/{png_num}.png"
     tori = tk.PhotoImage(file = png)
     tori_id = canvas.create_image(cx, cy,
@@ -17,9 +17,13 @@ def draw():
 
 #keyに押されたキーを代入する関数
 def key_down(event):
-    global key
+    global key, png_num
     key = event.keysym
-
+    if key == "s":
+        png_num = random.randint(0, 9)
+        draw()
+    else:
+        draw()
 #keyの値を初期化する関数
 def key_up(event):
     global key
@@ -44,6 +48,7 @@ def main_proc():
     cy = (my*100)+50
     maze.after(100, main_proc)
     canvas.coords("tori", cx, cy)
+    draw()
 
 if __name__ == "__main__":
 
@@ -61,5 +66,4 @@ if __name__ == "__main__":
     maze.after(100, main_proc)
     maze_list = maze_maker.make_maze(15, 9)
     maze_maker.show_maze(canvas, maze_list)
-    draw()
     maze.mainloop()
