@@ -3,7 +3,8 @@ import maze_maker
 
 #グローバル変数
 key = ""        #押されたキーを代入する関数
-cx, cy =300, 400     #こうかとんの現在地を表す変数
+cx, cy =150, 150     #こうかとんの現在地を表す変数
+mx, my = 1, 1
 
 #こうかとんを表示する関数
 def draw():
@@ -27,18 +28,20 @@ def key_up(event):
 
 #押したキーによってこうかとんを移動させる関数
 def main_proc():                                                         
-    global cx, cy, key, tori                                   
+    global cx, cy, key, mx, my                                  
     if key == 'Up':                        
-        cy -= 20                                                        
-        
+        my += -1   
+
     elif key == 'Down':                 
-        cy += 20                                                       
+        my += 1                                                     
 
     elif key == 'Right':                 
-        cx += 20                                                        
+        mx += 1                                                
 
     elif key == 'Left':                   
-        cx -= 20                                                   
+        mx -= 1     
+    cx = (mx*100)+50
+    cy = (my*100)+50
     maze.after(100, main_proc)
     canvas.coords("tori", cx, cy)
 
@@ -56,7 +59,7 @@ if __name__ == "__main__":
     maze.bind("<KeyPress>", key_down)                       
     maze.bind("<KeyRelease>", key_up)  
     maze.after(100, main_proc)
-    draw()
     maze_list = maze_maker.make_maze(15, 9)
     maze_maker.show_maze(canvas, maze_list)
+    draw()
     maze.mainloop()
