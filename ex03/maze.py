@@ -51,11 +51,12 @@ if __name__ == "__main__":
 
     canvas = tk.Canvas(maze, width = 1500,
     height = 900,bg = 'black')   
-    canvas.place(x=0, y=0)     
+    canvas.place(x=0, y=0)
 
     maze.bind("<KeyPress>", key_down)                       
     maze.bind("<KeyRelease>", key_up)  
     maze.after(100, main_proc)
     draw()
-    maze_maker.make_maze(15, 9)
+    maze_list = maze_maker.make_maze(15, 9)
+    maze_maker.show_maze(canvas, maze_list)
     maze.mainloop()
