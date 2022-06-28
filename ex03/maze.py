@@ -70,13 +70,23 @@ def count_up():
 
 # スタートラベルの作成
 def draw_start():
-    start = tk.Label(maze, text="S", font=("Times New Roman", 60), bg="yellow", height=1, width=2)
+    start = tk.Label(maze, 
+                    text="S", 
+                    font=("Times New Roman", 60), 
+                    bg="yellow", 
+                    height=1, 
+                    width=2)
     start.pack()
     start.place(x=100, y=0)
 
 # ゴールラベルの作成 
 def draw_goal():
-    goal = tk.Label(maze, text="G", font=("Times New Roman", 60), bg="red", height=1, width=2)
+    goal = tk.Label(maze, 
+                    text="G", 
+                    font=("Times New Roman", 60), 
+                    bg="red", 
+                    height=1, 
+                    width=2)
     goal.pack()
     goal.place(x=1300, y=800)
 
