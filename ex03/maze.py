@@ -1,64 +1,5 @@
-# import tkinter as tk
-
-# # グローバル変数
-# cx = 300 # こうかとんのx座標
-# cy = 400 # こうかとんのy座標
-# key = "" # 現在押されているキーを表す変数
-
-# def key_down(event):
-#     global key
-#     key = event.keysym
-
-
-# def key_up(event):
-#     global key
-#     key = ""
-
-
-# def main_proc(event):
-#     global cx, cy, key, tori                                   
-#     if key == 'Up':                         
-#         cy -= 20                                                      
-        
-#     elif key == 'Down':                    
-#         cy += 20                                                  
-
-#     elif key == 'Right':                   
-#         cx += 20                                                  
-
-#     elif key == 'Left':                    
-#         cx -= 20  
-
-#     maze.after(100, main_proc)
-#     canvas.coords("tori", cx, cy)
-
-
-# def draw():
-#     global tori, cx, cy, tori_id
-#     png_num = 1
-#     png = f"fig/{png_num}.png"
-#     tori = tk.PhotoImage(file = png)
-#     tori_id = canvas.create_image(cx, cy,
-#     image = tori, tag = "tori")
-
-
-# if __name__== "__main__":
-
-#     # ウィンドウ作成
-#     maze = tk.Tk()
-#     maze.geometry("1500x900")
-#     maze.title("迷えるこうかとん")
-
-#     canvas = tk.Canvas(maze, width = 1500,
-#     height = 900,bg = 'black')   
-#     canvas.place(x=0, y=0)     
-
-#     maze.bind("<KeyPress>", key_down)                       
-#     maze.bind("<KeyRelease>", key_up)  
-#     maze.after(100, main_proc)
-#     draw()
-#     maze.mainloop()
 import tkinter as tk
+import maze_maker
 
 #グローバル変数
 key = ""        #押されたキーを代入する関数
@@ -116,4 +57,5 @@ if __name__ == "__main__":
     maze.bind("<KeyRelease>", key_up)  
     maze.after(100, main_proc)
     draw()
+    maze_maker.make_maze(15, 9)
     maze.mainloop()
