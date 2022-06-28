@@ -1,6 +1,10 @@
 import tkinter as tk
 
 
+def key_down(event):
+    global key
+    key = event.keysym
+
 
 if __name__== "__main__":
     root = tk.Tk()
@@ -13,5 +17,9 @@ if __name__== "__main__":
     canvas = tk.Canvas(root, bg="#000000", height=900, width=1500)
     canvas.create_image(cx, cy, image=tori, tag="tori")
     canvas.pack()
+    key = "" # 現在押されているキーを表す変数
+    root.bind("<KeyPress>", key_down)
+    
+
 
     root.mainloop()
