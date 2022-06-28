@@ -100,7 +100,6 @@ def otosiana():
         if maze_list[a][b] == 0:
             maze_list[a][b] = 2
             c += 1
-            break
         else:
             continue
 if __name__ == "__main__":
