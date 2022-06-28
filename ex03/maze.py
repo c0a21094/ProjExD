@@ -29,16 +29,16 @@ def key_up(event):
 #押したキーによってこうかとんを移動させる関数
 def main_proc():                                                         
     global cx, cy, key, mx, my                                  
-    if key == 'Up':                        
+    if key == 'Up' and maze_list[my-1][mx] == 0:                        
         my += -1   
 
-    elif key == 'Down':                 
+    elif key == 'Down' and maze_list[my+1][mx] == 0:                 
         my += 1                                                     
 
-    elif key == 'Right':                 
+    elif key == 'Right' and maze_list[my][mx+1] == 0:                 
         mx += 1                                                
 
-    elif key == 'Left':                   
+    elif key == 'Left' and maze_list[my][mx-1] == 0:                   
         mx -= 1     
     cx = (mx*100)+50
     cy = (my*100)+50
