@@ -1,10 +1,12 @@
 import random
+import re
 import pygame as pg
 import sys
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((1600, 900))
+    scr_rect = screen.get_rect()
     bg = pg.image.load("pg_bg.jpg").convert_alpha() # surfaceクラス
     rect_bg = bg.get_rect()
     tori_img = pg.image.load("fig/6.png")
@@ -16,6 +18,7 @@ def main():
     vx, vy = 1, 1
     image = pg.Surface((20, 20))
     image.set_colorkey((0, 0, 0))
+    image_rect = image.get_rect()
     pg.draw.circle(image, (255, 0, 0), (10, 10), 10)
 
 
@@ -41,18 +44,32 @@ def main():
             vy = 1
 
         key_lst = pg.key.get_pressed()
-        if key_lst[pg.K_UP] and tori_rect[1] >= 0:
-            tori_rect.move_ip(0, -1)
+        if key_lst[pg.K_UP]:
+            tori_rect.centery -= 1
 
-        if key_lst[pg.K_DOWN] and tori_rect[1] <= 780:
-            tori_rect.move_ip(0, 1)
+        if key_lst[pg.K_DOWN]:
+            tori_rect.centery += 1
 
-        if key_lst[pg.K_RIGHT]and tori_rect[0] <= 1500:
-            tori_rect.move_ip(1, 0)
+        if key_lst[pg.K_RIGHT]:
+            tori_rect.centerx += 1
 
-        if key_lst[pg.K_LEFT]and tori_rect[0] >= 0:
-            tori_rect.move_ip(-1, 0)
+        if key_lst[pg.K_LEFT]:
+            tori_rect.centerx -= 1
         
+        if check_bound(tori_rect, scr_rect) != (1, 1):
+            if key_lst[pg.K_UP]:
+                tori_rect.centery += 1
+
+            if key_lst[pg.K_DOWN]:
+                tori_rect.centery -= 1
+
+            if key_lst[pg.K_RIGHT]:
+                tori_rect.centerx -= 1
+
+            if key_lst[pg.K_LEFT]:
+                tori_rect.centerx += 1          
+
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 pg.quit()
@@ -62,7 +79,16 @@ def main():
                 if event.key == pg.K_ESCAPE:
                     pg.quit()
                     sys.exit()
-        print(tori_rect)
+        if tori_rect.colliderect(image_rect) == True: return
+
+def check_bound(rct, scr_rct):
+    x,y = +1, +1
+    if scr_rct.left > rct.left or rct.right > scr_rct.right:
+        x = -1
+
+    if scr_rct.top > rct.top or rct.bottom > scr_rct.bottom:
+        y = -1
+    return x, y
 
 if __name__ == "__main__":
     pg.init()
