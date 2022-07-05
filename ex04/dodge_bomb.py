@@ -90,6 +90,9 @@ def main():
                 if event.key == pg.K_ESCAPE:
                     pg.quit()
                     sys.exit()
+                if event.key == pg.K_DELETE:
+                    pg.quit()
+                    sys.exit()
         
         # こうかとんと爆弾が接触したら閉じる
         if tori_rect.colliderect(image_rect1) or tori_rect.colliderect(image_rect2):
