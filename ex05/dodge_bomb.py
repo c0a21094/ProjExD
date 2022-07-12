@@ -1,65 +1,89 @@
+from re import S
 import pygame as pg
 import sys
 import random
 
+
+class Screen:
+    def __init__(self, t, wh, fname):
+        pg.display.set_caption(t)
+        self.sfc = pg.display.set_mode(wh)        # Surface
+        self.rct = self.sfc.get_rect()            # Rect
+        self.bgi_sfc = pg.image.load(fname)       # Surface
+        self.bgi_rct = self.bgi_sfc.get_rect()    # Rect
+
+    def blit(self):
+        self.sfc.blit(self.bgi_sfc, self.bgi_rct)
+
+
+class Bird:
+    def __init__(self, fname: str, size: float, xy):
+        self.sfc = pg.image.load(fname)    # Surface
+        self.sfc = pg.transform.rotozoom(self.sfc, 0, size)  # Surface
+        self.rct = self.sfc.get_rect()          # Rect
+        self.rct.center = xy
+
+    def blit(self, scr: Screen):
+        scr.sfc.blit(self.sfc, self.rct)
+
+    def update(self, scr: Screen):
+        key_states = pg.key.get_pressed() # 辞書
+        if key_states[pg.K_UP]: 
+            self.rct.centery -= 1
+        if key_states[pg.K_DOWN]: 
+            self.rct.centery += 1
+        if key_states[pg.K_LEFT]: 
+            self.rct.centerx -= 1
+        if key_states[pg.K_RIGHT]:
+            self.rct.centerx += 1
+        # 練習7
+        if check_bound(self.rct, scr.rct) != (1, 1): # 領域外だったら
+            if key_states[pg.K_UP]: 
+                self.rct.centery += 1
+            if key_states[pg.K_DOWN]: 
+                self.rct.centery -= 1
+            if key_states[pg.K_LEFT]: 
+                self.rct.centerx += 1
+            if key_states[pg.K_RIGHT]: 
+                self.rct.centerx -= 1
+        self.blit(scr)
+
+class Bomb:
+    def __init__(self, c, r, v, scr):
+        self.sfc = pg.Surface((2*r, 2*r)) # Surface
+        self.sfc.set_colorkey((0, 0, 0)) 
+        pg.draw.circle(self.sfc, c, (r, r), r)
+        self.rct = self.sfc.get_rect() # Rect
+        self.rct.centerx = random.randint(0, self.rct.width)
+        self.rct.centery = random.randint(0, self.rct.height)
+        self.vx, self.vy = v # 練習6
+
+    def blit(self, scr: Screen):
+        scr.sfc.blit(self.sfc, self.rct)
+
+    def update(self, scr: Screen):
+        self.rct.move_ip(self.vx, self.vy)
+        yoko, tate = check_bound(self.rct, scr.rct)
+        self.vx *= yoko
+        self.vy *= tate
+        self.blit(scr)
+
 def main():
     clock = pg.time.Clock()
-
-    # 練習1：スクリーンと背景画像
-    pg.display.set_caption("逃げろ！こうかとん")
-    screen_sfc = pg.display.set_mode((1600, 900)) # Surface
-    screen_rct = screen_sfc.get_rect()            # Rect
-    bgimg_sfc = pg.image.load("fig/pg_bg.jpg")    # Surface
-    bgimg_rct = bgimg_sfc.get_rect()              # Rect
-    screen_sfc.blit(bgimg_sfc, bgimg_rct)
-
-    # 練習3：こうかとん
-    kkimg_sfc = pg.image.load("fig/6.png")    # Surface
-    kkimg_sfc = pg.transform.rotozoom(kkimg_sfc, 0, 2.0)  # Surface
-    kkimg_rct = kkimg_sfc.get_rect()          # Rect
-    kkimg_rct.center = 900, 400
-
-    # 練習5：爆弾
-    bmimg_sfc = pg.Surface((20, 20)) # Surface
-    bmimg_sfc.set_colorkey((0, 0, 0)) 
-    pg.draw.circle(bmimg_sfc, (255, 0, 0), (10, 10), 10)
-    bmimg_rct = bmimg_sfc.get_rect() # Rect
-    bmimg_rct.centerx = random.randint(0, screen_rct.width)
-    bmimg_rct.centery = random.randint(0, screen_rct.height)
-    vx, vy = +1, +1 # 練習6
-
+    scr = Screen("逃げろ！こうかとん", (1600, 900), "fig/pg_bg.jpg")
+    kkimg = Bird("fig/6.png", 2.0, (900, 400))
+    bmimg = Bomb((255, 0, 0), 10, (+1, +1), scr)
     while True:
-        screen_sfc.blit(bgimg_sfc, bgimg_rct)
+        scr.blit()
 
         # 練習2
         for event in pg.event.get():
             if event.type == pg.QUIT: return
 
-        # 練習4
-        key_states = pg.key.get_pressed() # 辞書
-        if key_states[pg.K_UP]    == True: kkimg_rct.centery -= 1
-        if key_states[pg.K_DOWN]  == True: kkimg_rct.centery += 1
-        if key_states[pg.K_LEFT]  == True: kkimg_rct.centerx -= 1
-        if key_states[pg.K_RIGHT] == True: kkimg_rct.centerx += 1
-        # 練習7
-        if check_bound(kkimg_rct, screen_rct) != (1, 1): # 領域外だったら
-            if key_states[pg.K_UP]    == True: kkimg_rct.centery += 1
-            if key_states[pg.K_DOWN]  == True: kkimg_rct.centery -= 1
-            if key_states[pg.K_LEFT]  == True: kkimg_rct.centerx += 1
-            if key_states[pg.K_RIGHT] == True: kkimg_rct.centerx -= 1
-        screen_sfc.blit(kkimg_sfc, kkimg_rct)
-
-        # 練習6
-        bmimg_rct.move_ip(vx, vy)
-        # 練習5
-        screen_sfc.blit(bmimg_sfc, bmimg_rct)
-        # 練習7
-        yoko, tate = check_bound(bmimg_rct, screen_rct)
-        vx *= yoko
-        vy *= tate
-
-        # 練習8
-        if kkimg_rct.colliderect(bmimg_rct): return 
+        kkimg.update(scr)
+        bmimg.update(scr)
+        if kkimg.rct.colliderect(bmimg.rct): 
+            return 
 
         pg.display.update()
         clock.tick(1000)
