@@ -117,10 +117,22 @@ class Enemy:
         self.blit(scr)
 
 
+class End:
+    def __init__(self):
+        pg.mixer.init()
+        pg.mixer.music.load("ちゃんちゃん♪2.mp3")
+        pg.mixer.music.play(1)
+
+
+
+class Bgm:
+    def __init__(self):
+        pg.mixer.music.load("Fly_With_Dreams.mp3")
+        pg.mixer.music.play(-1)
+
+
 def main():
     clock = pg.time.Clock()
-    pg.mixer.music.load("Fly_With_Dreams.mp3")
-    pg.mixer.music.play(-1)
     scr = Screen("負けるな！こうかとん", (1600, 900), "fig/pg_bg.jpg")
     kkimg = Bird("fig/6.png", 2.0, (900, 400))
     bmimg1 = Bomb((255, 150, 0), 50, (+1, +1), scr)
@@ -149,6 +161,7 @@ def main():
             beam.update(scr)
         if kkimg.rct.colliderect(bmimg1.rct) or kkimg.rct.colliderect(bmimg2.rct) or kkimg.rct.colliderect(bmimg3.rct):
             gameover() 
+            End()
             return 
         elif enimg.rct.colliderect(kkimg.rct):
             gameclear()
@@ -176,8 +189,6 @@ def gameover():
     ed = datetime.datetime.now()
     time = f"{(ed-st).seconds}秒"
     pg.mixer.music.stop()
-    pg.mixer.music.load("ちゃんちゃん♪2.mp3")
-    pg.mixer.music.play(1)
     tkm.showinfo("Game Over", f"タイムは{time}でした")
 
 def gameclear():
