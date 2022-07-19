@@ -2,7 +2,7 @@ import pygame as pg
 import sys
 import random
 import tkinter as tk
-
+import tkinter.messagebox as tkm
 
 
 
@@ -91,14 +91,14 @@ class Rect2:
         self.blit(scr)
 
 
-class Score:
+class Score: 
     def __init__(self, score1, score2):
-        self.font = pg.font.Font(None, 150)
-        self.txt = self.font.render(f"{score1}     {score2}", True, (255, 255, 255))
+        self.font = pg.font.Font("fig/font.ttf", 100)
+        self.txt = self.font.render(f"{score1}    {score2}", True, (255, 255, 255))
         self.rct = self.txt.get_rect()
-
+        
     def blit(self, scr: Screen):
-        scr.sfc.blit(self.txt, (650, 150))
+        scr.sfc.blit(self.txt, (700, 150))
 
     def update(self, scr: Screen):
         self.blit(scr)
@@ -123,25 +123,43 @@ def main():
     while True:
         scr.blit()
         score.blit(scr)
-        for event in pg.event.get():
+
+        for event in pg.event.get(): # ×ボタンが押されたらウィンドウを閉じる
             if event.type == pg.QUIT: return
 
-        if baimg.rct.colliderect(reimg.rct):
+        if baimg.rct.colliderect(reimg.rct): # 棒と接触したら跳ね返す
             baimg.vx *= -1
-        if baimg.rct.colliderect(reimg2.rct):
+
+        if baimg.rct.colliderect(reimg2.rct): # 棒と接触したら跳ね返す
             baimg.vx *= -1
+
         baimg.update(scr)
         reimg.update(scr)
         reimg2.update(scr)
         score.update(scr)
 
-        if baimg.rct.left < scr.rct.left :
+        if baimg.rct.left < scr.rct.left : # 左側の壁に当たったら右側の得点を1プラスする
             r_score += 1
             score = Score(l_score, r_score)
 
-        if baimg.rct.right > scr.rct.right :
+        if baimg.rct.right > scr.rct.right : # 右側の壁に当たったら左側の得点を1プラスする
             l_score += 1
             score = Score(l_score, r_score)
+
+        if r_score == 5:  # スコアが5点になったらメッセージを出して終了する
+            pg.mixer.music.stop()
+            pg.mixer.music.load("fig/レベルアップ.mp3")
+            pg.mixer.music.play(1)
+            tkm.showinfo("Game Clear", "Player2 Win!!")
+            return 
+
+        if l_score == 5: # スコアが5点になったらメッセージを出して終了する
+            pg.mixer.music.stop()
+            pg.mixer.music.load("fig/レベルアップ.mp3")
+            pg.mixer.music.play(1)
+            tkm.showinfo("Game Clear", "Player1 Win!!")
+            return
+
         pg.display.update()
         clock.tick(1000)
 
