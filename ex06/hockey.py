@@ -91,14 +91,28 @@ class Rect2:
         self.blit(scr)
 
 
+class Rect3:
+    def __init__(self, fname: str, size: float, xy):
+        self.sfc = pg.image.load(fname)    # Surface
+        self.sfc = pg.transform.rotozoom(self.sfc, 0, size)  # Surface
+        self.rct = self.sfc.get_rect()          # Rect
+        self.rct.center = xy
+
+    def blit(self, scr: Screen):
+        scr.sfc.blit(self.sfc, self.rct)
+
+    def update(self, scr: Screen):
+        self.blit(scr)
+
+
 class Score: 
     def __init__(self, score1, score2):
-        self.font = pg.font.Font("fig/font.ttf", 100)
+        self.font = pg.font.Font("fig/font.ttf", 200)
         self.txt = self.font.render(f"{score1}    {score2}", True, (255, 255, 255))
         self.rct = self.txt.get_rect()
         
     def blit(self, scr: Screen):
-        scr.sfc.blit(self.txt, (700, 150))
+        scr.sfc.blit(self.txt, (600, 150))
 
     def update(self, scr: Screen):
         self.blit(scr)
@@ -118,6 +132,7 @@ def main():
     baimg = Ball((255, 0, 0), 30, (+2, +2), scr)
     reimg = Rect("fig/line2.jpeg", 0.7, (1575, 400))
     reimg2 = Rect2("fig/line-1.jpeg", 0.7, (25, 400))
+    wall = Rect3("fig/line3.jpeg", 0.5, (800, 450))
     score = Score(l_score, r_score)
     Bgm()
     while True:
@@ -127,15 +142,13 @@ def main():
         for event in pg.event.get(): # ×ボタンが押されたらウィンドウを閉じる
             if event.type == pg.QUIT: return
 
-        if baimg.rct.colliderect(reimg.rct): # 棒と接触したら跳ね返す
-            baimg.vx *= -1
-
-        if baimg.rct.colliderect(reimg2.rct): # 棒と接触したら跳ね返す
+        if baimg.rct.colliderect(reimg.rct) or baimg.rct.colliderect(reimg2.rct) or baimg.rct.colliderect(wall.rct): # 棒やかべと接触したら跳ね返す
             baimg.vx *= -1
 
         baimg.update(scr)
         reimg.update(scr)
         reimg2.update(scr)
+        wall.update(scr)
         score.update(scr)
 
         if baimg.rct.left < scr.rct.left : # 左側の壁に当たったら右側の得点を1プラスする
@@ -145,6 +158,7 @@ def main():
         if baimg.rct.right > scr.rct.right : # 右側の壁に当たったら左側の得点を1プラスする
             l_score += 1
             score = Score(l_score, r_score)
+
 
         if r_score == 5:  # スコアが5点になったらメッセージを出して終了する
             pg.mixer.music.stop()
